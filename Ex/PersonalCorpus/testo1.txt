@@ -1,4 +1,6 @@
-
+    è
+    
+    
     The field of Natural Language Processing (NLP) is rapidly growing and evolving. It spans a broad range of applications, from 
     machine translation to chatbots, and plays an increasingly important role in making human-computer interaction more seamless. 
     NLP is crucial for developing systems that can understand and generate natural language, such as voice assistants, customer 
