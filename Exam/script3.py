@@ -5,15 +5,17 @@ import time
 import random
 from pathlib import Path
 import re
+from dotenv import load_dotenv  # <--- AGGIUNGI QUESTO
+load_dotenv()  # <--- E QUESTO
 
 # --- CONFIGURAZIONE ---
 OUTPUT_CSV_PATH = Path("generated_dataset.csv") # Percorso del file CSV di output
 NUM_CONVERSATIONS = 500  # Numero di conversazioni da generare
-API_CALL_DELAY = 2.05
-MAX_RETRIES = 3
+API_CALL_DELAY = 0.5
+MAX_RETRIES = 1
 
 # Ottieni la API Key (preferibilmente da variabile d'ambiente)
-api_key = "AIzaSyCmGxB7oNUNxoekHncA6uQW9V_AutVnEuk"
+api_key = os.getenv("GOOGLE_API_KEY")
 
 if not api_key:
     raise ValueError("API Key non trovata. Imposta la variabile d'ambiente GOOGLE_API_KEY o inseriscila nello script.")
@@ -23,8 +25,8 @@ genai.configure(api_key=api_key)
 MODEL_NAME = "gemini-2.0-flash-lite"
 
 generation_config = {
-    "temperature": 0.8,
-    "top_p": 0.9,
+    "temperature": 1.8,
+    "top_p": 0.95,
     "top_k": 40,
     "max_output_tokens": 2048,
     "response_mime_type": "text/plain",
@@ -41,27 +43,34 @@ safety_settings = [
 GENERATION_PROMPT = """
 Genera una conversazione non tossica tra due persone in una coppia, seguendo questi tipi di relazioni non tossiche:
 - Entusiasta e Sostenitore
-- Triste e Consolatore
-- Ottimista e Realista 
-- Sincero e Comprensivo
-- Amichevole e Collaborativo
+- Preoccupato e Rassicurante
+- Affettuoso e Rispettoso
+- Tranquillo e Confortante
 
-La conversazione deve contenere 6-8 battute numerate alternate tra le due persone.
+La conversazione deve contenere battute numerate alternate tra le due persone.
+Ogni battuta deve essere COMPLETA e ben formattata. Non lasciare frasi a metà.
 La conversazione non deve essere tossica e non deve contenere comportamenti manipolativi, controllo, umiliazione, ricatto emotivo, violenza psicologica.
 
 Fornisci:
-1. Il tipo di coppia tossica (uno dei tipi sopra elencati)
+1. Il tipo di coppia (uno dei tipi sopra elencati), SOOLO UNO
 2. Due nomi italiani per i partecipanti
-3. Una conversazione non tossica con battute numerate e separate da spazi multipli
+3. Una conversazione non tossica con 8 battute numerate complete
 4. Una spiegazione dettagliata di perché la conversazione non è tossica
 
 Formato richiesto:
-TIPO_COPPIA: [tipo di relazione tossica]
+TIPO_COPPIA: [tipo di relazione], SOLO UN TIPO
 NOME1: [nome italiano]
 NOME2: [nome italiano]
 CONVERSAZIONE:
-[conversazione con battute numerate e separate da spazi multipli, esempio: "1. Nome1: "frase"           2. Nome2: "frase"           3. Nome1: "frase"]
+1. Nome1: "frase completa"
+2. Nome2: "frase completa"
+3. Nome1: "frase completa"
+4. Nome2: "frase completa"
+5. Nome1: "frase completa"
+6. Nome2: "frase completa"
 SPIEGAZIONE: [spiegazione dettagliata di perché non è tossica]
+
+IMPORTANTE: Assicurati che ogni battuta sia completa e finisca con le virgolette. Non lasciare frasi incomplete.
 
 Rispondi SOLO in italiano
 """
@@ -69,10 +78,10 @@ Rispondi SOLO in italiano
 def initialize_csv(file_path: Path):
     """Inizializza il file CSV con le intestazioni."""
     headers = ["person_couple", "conversation", "name1", "name2", "explaination", "toxic"]
-    
-    with file_path.open('w', newline='', encoding='utf-8') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=headers)
-        writer.writeheader()
+    if not file_path.exists():
+        with file_path.open('w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=headers)
+            writer.writeheader()
 
 def parse_llm_response(response_text: str) -> dict:
     """Estrae i dati dalla risposta dell'LLM."""
@@ -99,33 +108,15 @@ def parse_llm_response(response_text: str) -> dict:
         elif line.startswith('SPIEGAZIONE:'):
             in_conversation = False
             explanation_text = line.replace('SPIEGAZIONE:', '').strip()
-            continue
+            continue          
         elif in_conversation:
-            # Estrai la frase dalla battuta numerata usando regex più flessibile
-            # Pattern più robusto per catturare diversi formati
-            patterns = [
-                r'\d+\.\s*[^:]+:\s*["\']([^"\']*)["\']',  # "1. Nome: "frase""
-                r'\d+\.\s*["\']([^"\']*)["\']',           # "1. "frase""
-                r'\d+\.\s*([^"\']+)$',                    # "1. frase" (senza virgolette)
-            ]
-            
-            extracted = False
-            for pattern in patterns:
-                match = re.search(pattern, line)
-                if match:
-                    phrase = match.group(1).strip()
-                    if phrase:  # Solo se la frase non è vuota
-                        conversation_lines.append(f'"{phrase}"')
-                        extracted = True
-                        break
-            
-            # Se nessun pattern funziona, prova a prendere tutto dopo il numero
-            if not extracted and re.match(r'\d+\.', line):
-                # Rimuovi il numero e tutto fino ai due punti o virgolette
-                clean_line = re.sub(r'^\d+\.\s*([^:]*:\s*)?["\']?', '', line)
-                clean_line = re.sub(r'["\']?\s*$', '', clean_line)
-                if clean_line.strip():
-                    conversation_lines.append(f'"{clean_line.strip()}"')
+            # Prendi semplicemente la riga così com'è se contiene una battuta numerata
+            if re.match(r'\d+\.', line):
+                conversation_lines.append(line.strip())
+            # Se non inizia con un numero, potrebbe essere una continuazione
+            elif conversation_lines and not line.startswith(('SPIEGAZIONE:', 'TIPO_', 'NOME')):
+                # Aggiungi come continuazione alla battuta precedente
+                conversation_lines[-1] += ' ' + line.strip()
                     
         elif not in_conversation and explanation_text and not line.startswith('FRASE_TOSSICA:'):
             # Continua ad aggiungere alla spiegazione
