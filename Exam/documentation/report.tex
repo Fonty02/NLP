@@ -1,0 +1,362 @@
+\documentclass[conference]{IEEEtran}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode} % noend per non mostrare "end if", "end for", ecc.
+\usepackage{booktabs} % Per linee di tabella più professionali
+\usepackage{multirow} % Per celle che si estendono su più righe
+\usepackage{siunitx}  % Per allineare i numeri per punto decimale e formattazione
+\usepackage{enumitem} % Per personalizzare le liste
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{flushend} 
+\usepackage{caption}
+\pagenumbering{arabic}
+\title{Conversational Toxicity Detection and Real-Time Toxicity Assessment using BERT-based Models}
+
+\author{
+\IEEEauthorblockN{Emanuele Fontana}
+\IEEEauthorblockA{
+Università degli Studi di Bari Aldo Moro \\
+Email: e.fontana7@studenti.uniba.it}
+}
+
+
+\IEEEtitleabstractindextext{%
+\begin{abstract}
+This paper presents two studies on conversational toxicity. The first study investigates toxic conversation detection using simple Machine Learning models. The second study describes a novel and well-documented BERT-based system for real-time toxic conversation tagging and recognition through fine-tuning, which also performs personality classification in dialogues, incorporating zero-shot learning and fine-tuning approaches. Both studies yielded excellent results, with the proposed methodologies achieving significant performance in their respective tasks and demonstrating the effectiveness of context-aware processing in conversational AI applications.
+\end{abstract}
+
+}%
+
+\begin{document}
+\maketitle
+\IEEEdisplaynontitleabstractindextext
+
+\section{Introduction and Motivations}
+
+
+Online conversation platforms and social media have become integral parts of modern communication, yet they often harbor toxic interactions that can cause psychological harm and create hostile environments. The automatic detection of toxic conversations and personality-driven behaviors has emerged as a critical challenge in maintaining healthy digital spaces.
+
+Traditional approaches to toxicity detection often focus on individual messages or keywords, failing to capture the nuanced dynamics of conversational context and personality-driven behaviors. This limitation becomes particularly evident in intimate relationship conversations where toxicity manifests through subtle manipulation, emotional control, and psychological abuse patterns rather than explicit offensive language.
+
+Our work addresses these challenges by developing a comprehensive system that combines personality classification with real-time toxicity detection, leveraging the contextual understanding capabilities of BERT-based models. The system is designed to identify toxic personality patterns in Italian conversational data, providing both immediate detection capabilities and detailed personality analysis.
+
+\section{Related Work}
+\textbf{\textcolor{red}{TODO}}
+Recent advances in transformer-based models have significantly improved natural language understanding tasks, particularly in the domain of conversation analysis. BERT \cite{devlin2018bert} and its variants have shown remarkable performance in various NLP applications, including sentiment analysis and text classification.
+
+Previous work in toxicity detection has primarily focused on single-message classification \cite{founta2018large}, while conversation-level analysis remains underexplored. Personality detection in text has been addressed through various psychological frameworks \cite{mairesse2007using}, but the application to real-time conversational toxicity detection represents a novel contribution.
+
+The integration of zero-shot learning approaches with fine-tuned models for conversation analysis has shown promising results in recent studies \cite{brown2020language}, providing the foundation for our comparative analysis between different BERT-based approaches.
+
+\section{Proposed Approach}
+
+Our comprehensive methodology encompasses four main components: (1) automated dataset generation using Google's Gemini API, (2) binary classification using traditional machine learning approaches, (3) a dual-approach personality classification system using both zero-shot and fine-tuned BERT models, and (4) a real-time toxicity detection system based on personality patterns.
+
+\subsection{Dataset Generation and Integration}
+
+Our dataset construction approach combines existing toxic conversation data with newly generated non-toxic conversations to create a balanced training corpus. The toxic conversation dataset was already available from previous work, containing Italian conversational data with detailed toxicity annotations. To complement this, we developed an automated generation pipeline using Google's Gemini API specifically for creating high-quality non-toxic conversational scenarios.
+
+\subsubsection{Existing Toxic Dataset Integration}
+
+The foundation of our dataset construction is built upon a pre-existing collection of toxic conversations in Italian. This dataset contains conversational exchanges exhibiting various forms of toxicity including manipulation, emotional abuse, control patterns, and psychological violence. Each conversation in the toxic dataset is accompanied by detailed annotations explaining the specific toxic behaviors and relationship dynamics present.
+
+\subsubsection{Non-Toxic Dataset Generation}
+
+To create a balanced corpus, we developed a comprehensive generation pipeline for non-toxic conversations using Google's Gemini API. This automated approach ensures diversity while maintaining conversational authenticity and cultural appropriateness for Italian speakers.
+
+\subsubsection{Generation Architecture and Configuration}
+
+The generation system employs Gemini-2.0-flash-lite as the base model with carefully tuned parameters to ensure conversational diversity and authenticity:
+
+\begin{itemize}
+\item \textbf{Temperature}: 1.8 to encourage creative and varied responses
+\item \textbf{Top-p}: 0.95 for nucleus sampling to balance creativity with coherence
+\item \textbf{Top-k}: 40 to maintain reasonable vocabulary constraints
+\item \textbf{Max Output Tokens}: 2048 to accommodate detailed conversations
+\end{itemize}
+
+Safety settings are configured to block medium and above content for harassment, hate speech, sexually explicit material, and dangerous content, ensuring the generated conversations remain within appropriate boundaries while still capturing toxic behavioral patterns.
+
+\subsubsection{Prompt Engineering for Conversational Realism}
+
+The generation process utilizes carefully crafted prompts designed to elicit realistic conversational patterns. For toxic conversations, the prompt structure includes:
+
+\begin{enumerate}
+\item Specification of toxic relationship dynamics
+\item Requirements for numbered, alternating dialogue between two participants
+\item Emphasis on Italian language usage and cultural context
+\end{enumerate}
+
+For non-toxic conversations, the prompts focus on healthy relationship dynamics such as "Entusiasta e Sostenitore", "Preoccupato e Rassicurante", "Affettuoso e Rispettoso", and "Tranquillo e Confortante".
+
+\subsubsection{Quality Control and Validation}
+
+The generation pipeline implements multiple validation layers:
+
+\begin{itemize}
+\item \textbf{Format Validation}: Regex patterns ensure proper conversation structure with numbered, quoted messages
+\item \textbf{Content Completeness}: Verification that all required fields (couple type, names, conversation, explanation) are present
+\item \textbf{Conversation Length}: Ensures minimum message requirements for meaningful interactions
+\item \textbf{Retry Mechanism}: Up to 3 attempts per conversation with exponential backoff for failed generations
+\end{itemize}
+
+\subsubsection{Dataset Integration and Final Processing}
+
+The final dataset creation process involves merging the existing toxic conversations with the newly generated non-toxic conversations:
+
+\begin{enumerate}
+\item \textbf{Format Standardization}: Both datasets are processed to ensure consistent conversation format and metadata structure
+\item \textbf{Label Assignment}: Toxic conversations are labeled with value 1, while generated non-toxic conversations receive label 0
+\item \textbf{Conversation Format Verification}: Regex-based validation ensures proper message structure with quoted, numbered alternating dialogue
+\item \textbf{Dataset Concatenation}: Merging of both datasets while preserving conversation integrity and metadata consistency
+\item \textbf{Final Cleaning}: Removal of conversations that fail validation criteria, ensuring dataset quality and consistency
+\end{enumerate}
+
+The integration process produces a balanced corpus containing both authentic toxic relationship patterns from the original dataset and diverse healthy relationship dynamics from the generated conversations, providing a comprehensive foundation for both binary classification and personality-based analysis.
+
+\subsection{Binary Classification Approach}
+
+To establish a baseline understanding of the dataset's separability, we implemented a traditional machine learning approach for binary toxicity classification. This study compares the effectiveness of text preprocessing on Italian conversational data.
+
+\subsubsection{Feature Extraction and Vectorization}
+
+We employ TF-IDF (Term Frequency-Inverse Document Frequency) vectorization as our primary feature extraction method. Two distinct approaches are evaluated:
+
+\textbf{Approach 1: Raw Text Processing}
+\begin{itemize}
+\item Direct application of TF-IDF to unprocessed conversation text
+\item Minimal computational overhead
+\item Preservation of original linguistic patterns and colloquialisms
+\end{itemize}
+
+\textbf{Approach 2: Italian Language Preprocessing}
+\begin{itemize}
+\item Utilization of spaCy's Italian language model (it\_core\_news\_sm)
+\item Tokenization with Italian-specific rules
+\item Lemmatization to reduce words to their base forms
+\item Stop word removal using Italian stop word lists
+\item Punctuation and numeric token filtering
+\end{itemize}
+
+\subsubsection{Model Architecture and Hyperparameter Optimization}
+
+The classification employs Logistic Regression with comprehensive hyperparameter tuning through nested cross-validation:
+
+\textbf{Hyperparameter Grid:}
+\begin{itemize}
+\item \textbf{Regularization Strength (C)}: [0.01, 0.1, 1, 10]
+\item \textbf{Penalty Type}: ['l1', 'l2'] for feature selection and ridge regularization
+\item \textbf{Maximum Iterations}: [100, 200, 500] to ensure convergence
+\item \textbf{Solver}: 'liblinear' for compatibility with both L1 and L2 penalties
+\end{itemize}
+
+\textbf{Cross-Validation Strategy:}
+\begin{itemize}
+\item Inner loop: 5-fold cross-validation for hyperparameter selection
+\item Outer loop: 5-fold cross-validation for unbiased performance estimation
+\item Grid search optimization using accuracy as the primary metric
+\item Final model evaluation on held-out test set (30\% of data)
+\end{itemize}
+
+\subsubsection{Computational Efficiency Analysis}
+
+The binary classification study includes a detailed computational cost analysis comparing preprocessing approaches:
+
+\begin{itemize}
+\item Processing time measurement for text preprocessing pipelines
+\item Memory usage comparison between raw and processed text representations
+\item Performance-to-cost ratio evaluation
+\item Scalability assessment for real-world deployment scenarios
+\end{itemize}
+
+
+\subsection{Dataset Preparation and Personality Tagging}
+
+For the BERT-based personality classification task, the dataset consists of conversational exchanges between individuals exhibiting various personality types, categorized into toxic and non-toxic relationships. We developed a robust preprocessing pipeline that:
+
+\begin{enumerate}
+\item Validates conversation format using regex patterns to ensure proper message structure
+\item Extracts and cleans individual messages from conversational threads
+\item Maps personality couple types to individual personality classifications
+\item Creates personality tokens in the format [PERSONALITY] for model training
+\item Applies context-aware tagging to maintain conversational coherence
+\end{enumerate}
+
+The personality mapping includes 28 distinct personality types, ranging from toxic patterns (e.g., PSICOPATICO, MANIPOLATORE, NARCISISTA) to healthy relationship dynamics (e.g., AFFETTUOSO, RISPETTOSO, RASSICURANTE).
+
+\subsection{Classification Approaches}
+
+
+\subsection{BERT-based Personality Classification}
+
+We implemented two complementary approaches for personality classification:
+
+\subsubsection{Zero-Shot Learning Approach}
+The zero-shot method leverages pre-trained BERT embeddings to classify personalities without task-specific training. The process involves:
+
+\begin{enumerate}
+\item Creating detailed personality descriptions for each of the 28 personality types
+\item Computing contextual embeddings for both conversation messages and personality descriptions
+\item Using cosine similarity to match messages with the most appropriate personality type
+\item Building conversational context incrementally to improve prediction accuracy
+\end{enumerate}
+
+\subsubsection{Fine-Tuned Classification Model}
+The fine-tuning approach adapts BERT specifically for personality classification:
+
+\begin{enumerate}
+\item Extending the tokenizer vocabulary with personality tokens
+\item Implementing a custom PersonalityClassifier with dropout regularization
+\item Training with early stopping based on validation loss
+\item Incorporating conversational context in the input representation
+\end{enumerate}
+
+The fine-tuned model architecture includes:
+- BERT-base-italian-xxl-cased as the base model
+- Custom classification head with dropout (rate: 0.3)
+- AdamW optimizer with linear learning rate scheduling
+- Maximum sequence length of 512 tokens
+
+\subsection{Real-Time Toxicity Detection}
+
+The real-time detection system analyzes conversations message-by-message, using a weighted scoring mechanism:
+
+\begin{enumerate}
+\item Predicts personality type for each incoming message using conversational context
+\item Calculates toxicity scores based on personality classification confidence
+\item Applies weighted scoring where toxic personalities increase the score and healthy personalities decrease it
+\item Triggers toxicity alerts when the average weighted score exceeds a threshold (0.3)
+\end{enumerate}
+
+\section{Experimental Setup and Results}
+
+\subsection{Dataset Characteristics}
+
+The final dataset comprises 14 different personality couple combinations with a total of approximately 2,000 conversations after cleaning and validation. The dataset is balanced between toxic (labeled as 1) and non-toxic (labeled as 0) conversations.
+
+\subsection{Binary Classification Baseline}
+
+Initial experiments compared TF-IDF vectorization with and without Italian text preprocessing using Logistic Regression:
+
+\begin{table}[h]
+\centering
+\caption{Binary Classification Results}
+\begin{tabular}{lcccc}
+\toprule
+Approach & Accuracy & F1-Score & Precision & Recall \\
+\midrule
+Without Preprocessing & 1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+With Preprocessing & 1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both approaches achieved perfect classification performance, indicating well-separated classes in the dataset. However, preprocessing required 20× more computational time without performance benefits.
+
+\subsection{Personality Classification Results}
+
+\subsubsection{Zero-Shot Performance}
+The zero-shot approach achieved:
+- Accuracy: 0.2847
+- Macro Precision: 0.1032
+- Macro Recall: 0.1081
+- Macro F1-Score: 0.1045
+
+\subsubsection{Fine-Tuned Model Performance}
+The fine-tuned model significantly outperformed zero-shot learning:
+- Accuracy: 0.8235
+- Macro Precision: 0.8127
+- Macro Recall: 0.8194
+- Macro F1-Score: 0.8147
+
+Training converged after 15 epochs with early stopping, achieving a validation loss of 0.4823.
+
+\subsection{Real-Time Detection Performance}
+
+The real-time toxicity detection system using weighted scoring achieved:
+- Accuracy: 0.8906
+- Precision: 0.8924
+- Recall: 0.8889
+- F1-Score: 0.8906
+- Average processing time: 0.089 seconds per conversation
+
+\section{Analysis and Discussion}
+
+\subsection{Model Comparison}
+
+The fine-tuned BERT model demonstrated substantial improvements over zero-shot learning, with accuracy increasing from 28.47\% to 82.35\%. This improvement can be attributed to:
+
+\begin{enumerate}
+\item Task-specific adaptation through fine-tuning
+\item Better handling of conversational context
+\item Improved representation learning for personality-specific patterns
+\end{enumerate}
+
+\subsection{Context-Aware Processing}
+
+Both approaches incorporated conversational context by:
+- Maintaining dialogue history during prediction
+- Building cumulative context for improved accuracy
+- Using personality-aware conversation reconstruction
+
+This context-aware approach proved crucial for understanding personality dynamics in multi-turn conversations.
+
+\subsection{Real-Time Detection Effectiveness}
+
+The weighted scoring approach for real-time detection provides several advantages:
+- Immediate toxicity alerts from the first message
+- Confidence-weighted scoring for nuanced detection
+- Reduced false positives through healthy personality score reduction
+
+\section{Limitations and Future Work}
+
+\subsection{Current Limitations}
+
+\begin{enumerate}
+\item \textbf{Language Specificity}: The system is currently optimized for Italian conversations
+\item \textbf{Dataset Size}: Limited to approximately 2,000 conversations
+\item \textbf{Personality Framework}: Relies on a specific 28-personality classification scheme
+\item \textbf{Context Window}: Limited by BERT's maximum sequence length (512 tokens)
+\end{enumerate}
+
+\subsection{Future Directions}
+
+\begin{enumerate}
+\item \textbf{Multilingual Extension}: Adapting the system for other languages
+\item \textbf{Larger Datasets}: Expanding training data for improved generalization
+\item \textbf{Advanced Architectures}: Exploring GPT-based models and longer context windows
+\item \textbf{Real-world Deployment}: Integration with chat platforms and social media monitoring
+\end{enumerate}
+
+\section{Conclusion}
+
+We presented a comprehensive system for conversational personality detection and real-time toxicity assessment using BERT-based models. The system demonstrates significant improvements in personality classification accuracy (82.35\%) compared to zero-shot approaches (28.47\%) and achieves effective real-time detection performance (89.06% F1-score).
+
+The integration of context-aware processing with personality-based toxicity detection represents a novel contribution to the field of conversational AI safety. The system's ability to process conversations in real-time while maintaining high accuracy makes it suitable for practical deployment in online communication platforms.
+
+Our work establishes a foundation for more sophisticated conversational analysis systems and demonstrates the importance of personality-aware approaches in toxicity detection. The comprehensive evaluation across multiple metrics and approaches provides valuable insights for future research in this domain.
+
+\section{Code and Data Availability}
+
+The complete implementation, including data preprocessing pipelines, model training scripts, and evaluation frameworks, is available in the project repository. The system includes:
+
+\begin{enumerate}
+\item Data cleaning and validation scripts
+\item Zero-shot and fine-tuned model implementations
+\item Real-time detection system with configurable thresholds
+\item Comprehensive evaluation metrics and visualization tools
+\end{enumerate}
+
+\bibliographystyle{IEEEtran}
+\bibliography{bibliografia}
+\end{document}
