@@ -1,2 +1,5 @@
 /env
 .env
+/personality_classifier_best
+.personality_classifier_best
+*.zip
