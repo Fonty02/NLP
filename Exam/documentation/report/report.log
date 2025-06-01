@@ -1,8 +1,10 @@
-This is LuaHBTeX, Version 1.21.0 (MiKTeX 25.3) (format=lualatex 2025.3.19)  31 MAY 2025 19:14
+This is LuaHBTeX, Version 1.21.0 (MiKTeX 25.3) (format=lualatex 2025.3.19)  1 JUN 2025 10:33
  system commands enabled.
  file:line:error style messages enabled.
-**c:/Users/fonta/Desktop/Magistrale/Repo/NLP/Exam/documentation/report
-(c:/Users/fonta/Desktop/Magistrale/Repo/NLP/Exam/documentation/report.tex
+**c:/Users/fonta/Desktop/Magistrale/Repo/NLP/Exam/documentation/report/report
+
+(c:/Users/fonta/Desktop/Magistrale/Repo/NLP/Exam/documentation/report/report.te
+x
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 Lua module: luaotfload 2024-12-03 v3.29 Lua based OpenType font support
@@ -857,23 +859,12 @@ or `english'. on input line 40.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 
-Underfull \hbox (badness 5231) in paragraph at lines 57--58
-[]\T1/lmr/m/n/10 Pre-vi-ous work in tox-i-c-ity de-tec-tion has pri-mar-
- []
 
-
-Underfull \hbox (badness 1701) in paragraph at lines 57--58
-\T1/lmr/m/n/10 ily fo-cused on single-message clas-si-fi-ca-tion [[]], while
- []
-
-
-
-
-Underfull \hbox (badness 3209) in paragraph at lines 63--64
-[]\T1/lmr/m/n/10 Our com-pre-hen-sive method-ol-ogy en-com-passes four
- []
-
-
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 5
+9.
+(C:/Users/fonta/AppData/Local/Programs/MiKTeX/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 
 [1
 Non-PDF special ignored!{C:/Users/fonta/AppData/Local/MiKTeX/fonts/map/pdftex/pd
@@ -939,12 +930,17 @@ Underfull \hbox (badness 1953) in paragraph at lines 100--101
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 144--145
+Underfull \hbox (badness 1365) in paragraph at lines 127--128
+[]\T1/lmr/m/n/10 Our com-pre-hen-sive method-ol-ogy en-com-passes three
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
 []\T1/lmr/m/n/10 Uti-liza-tion of spaCy's Ital-ian lan-guage model
  []
 
 
-Underfull \hbox (badness 1466) in paragraph at lines 153--154
+Underfull \hbox (badness 1466) in paragraph at lines 154--155
 \T1/lmr/m/n/10 com-pre-hen-sive hy-per-pa-ram-e-ter tun-ing through nested
  []
 
@@ -953,47 +949,106 @@ Underfull \hbox (badness 1466) in paragraph at lines 153--154
 [2]
 
 
-Underfull \hbox (badness 1817) in paragraph at lines 249--250
+Underfull \hbox (badness 1817) in paragraph at lines 230--231
 []\T1/lmr/m/n/10 Ini-tial ex-per-i-ments com-pared TF-IDF vec-tor-iza-tion
  []
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 254.
+(Font)              <8> on input line 235.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 254.
+(Font)              <6> on input line 235.
 
-Overfull \hbox (17.19492pt too wide) in paragraph at lines 254--262
+Overfull \hbox (17.19492pt too wide) in paragraph at lines 235--243
  [][] 
  []
 
+<figures/confusion_matrix_with_text_preprocessing.png, id=177, 536.2434pt x 426
+.393pt>
+File: figures/confusion_matrix_with_text_preprocessing.png Graphic file (type p
+ng)
+<use figures/confusion_matrix_with_text_preprocessing.png>
+Package luatex.def Info: figures/confusion_matrix_with_text_preprocessing.png  
+used on input line 248.
+(luatex.def)             Requested size: 187.68799pt x 149.23978pt.
 
-Underfull \hbox (badness 1418) in paragraph at lines 269--274
- \T1/lmr/m/it/10 1) Zero-Shot Per-for-mance: [][][]\T1/lmr/m/n/10 The zero-shot ap-proach
- []
-
-
-Underfull \hbox (badness 2042) in paragraph at lines 276--281
- \T1/lmr/m/it/10 2) Fine-Tuned Model Per-for-mance: [][][]\T1/lmr/m/n/10 The fin
-e-tuned
- []
+Underfull \vbox (badness 1152) has occurred while \output is active []
 
 
 
 [3]
-Underfull \hbox (badness 2012) in paragraph at lines 302--303
-[]\T1/lmr/m/n/10 Im-proved rep-re-sen-ta-tion learn-ing for personality-
+<figures/confusion_matrix_without_text_preprocessing.png, id=200, 536.2434pt x 
+426.393pt>
+File: figures/confusion_matrix_without_text_preprocessing.png Graphic file (typ
+e png)
+<use figures/confusion_matrix_without_text_preprocessing.png>
+Package luatex.def Info: figures/confusion_matrix_without_text_preprocessing.pn
+g  used on input line 254.
+(luatex.def)             Requested size: 187.68799pt x 149.23978pt.
+<figures/confusion_matrix_zero_shot.png, id=201, 807.9786pt x 714.7503pt>
+File: figures/confusion_matrix_zero_shot.png Graphic file (type png)
+<use figures/confusion_matrix_zero_shot.png>
+Package luatex.def Info: figures/confusion_matrix_zero_shot.png  used on input 
+line 277.
+(luatex.def)             Requested size: 201.99416pt x 178.68713pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+<figures/training_validation_loss_plot.png, id=202, 859.2903pt x 426.393pt>
+File: figures/training_validation_loss_plot.png Graphic file (type png)
+<use figures/training_validation_loss_plot.png>
+Package luatex.def Info: figures/training_validation_loss_plot.png  used on inp
+ut line 289.
+(luatex.def)             Requested size: 257.78908pt x 127.91888pt.
+
+Overfull \hbox (5.78908pt too wide) in paragraph at lines 289--290
+ [][] 
+ []
+
+<figures/confusion_matrix_finetuned.png, id=203, 939.51pt x 859.2903pt>
+File: figures/confusion_matrix_finetuned.png Graphic file (type png)
+<use figures/confusion_matrix_finetuned.png>
+Package luatex.def Info: figures/confusion_matrix_finetuned.png  used on input 
+line 310.
+(luatex.def)             Requested size: 234.87692pt x 214.82204pt.
+
+
+[4<./figures/confusion_matrix_with_text_preprocessing.png><./figures/confusion_m
+atrix_without_text_preprocessing.png><./figures/confusion_matrix_zero_shot.png><
+./figures/training_validation_loss_plot.png>]
+<figures/confusion_matrix_realtime_weighted_score.png, id=218, 578.16pt x 433.6
+2pt>
+File: figures/confusion_matrix_realtime_weighted_score.png Graphic file (type p
+ng)
+<use figures/confusion_matrix_realtime_weighted_score.png>
+Package luatex.def Info: figures/confusion_matrix_realtime_weighted_score.png  
+used on input line 339.
+(luatex.def)             Requested size: 289.07928pt x 216.80946pt.
+
+Overfull \hbox (37.07928pt too wide) in paragraph at lines 339--340
+ [][] 
  []
 
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
-Underfull \hbox (badness 4556) in paragraph at lines 345--346
-[]\T1/lmr/m/n/10 The in-te-gra-tion of context-aware pro-cess-ing with
+
+
+
+[5<./figures/confusion_matrix_finetuned.png><./figures/confusion_matrix_realtime
+_weighted_score.png>]
+Underfull \hbox (badness 3460) in paragraph at lines 381--382
+\T1/lmr/m/n/10 ing link: []$https://github.com/Fonty02/NLP/tree/main/
  []
 
 (./report.bbl
+Underfull \hbox (badness 1365) in paragraph at lines 38--41
+\T1/lmr/m/n/8 ber Abuse De-tec-tion Us-ing Cutting-Edge Lan-guage Mod-els
+ []
 
-[4])
+)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1009,41 +1064,21 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[leftcolumn badness]: 1000000 on 18.44444pt
-[rightcolumn badness]: 1000000 on 18.44444pt
-[leftcolumn badness]: 1000000 on 18.44444pt
-[rightcolumn badness]: 1000000 on 18.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
-[leftcolumn badness]: 1000000 on 0.44444pt
-[rightcolumn badness]: 1000000 on 0.44444pt
+[leftcolumn badness]: 1000000 on 38.28345pt
+[rightcolumn badness]: 1000000 on 38.28345pt
 - LAST -
-Extra skip:17.55556pt
-Left:84.0pt/1.55556pt
-Right:66.0pt/2.0pt
-Split: 84.5pt
-Output:84.5pt
+Extra skip:0.0pt
+Left:300.97177pt/1.94443pt
+Right:291.64415pt/1.5555pt
+Split: 297.30795pt
+Output:297.30795pt
 Pageshrink: 0.0pt
 Pagestretch: 0.0pt
 @colht:672.0pt
-FLUSHEND [output]: 84.5pt
-FLUSHEND [leftcolumn badness]: 100
-FUSHEND [rightcolumn badness]: 10000
-[5] (./report.aux)
+FLUSHEND [output]: 297.30795pt
+FLUSHEND [leftcolumn badness]: 22
+FUSHEND [rightcolumn badness]: 1
+[6] (./report.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -1053,20 +1088,19 @@ L3 programming layer <2025-01-18>
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 26380E1A04999CD46E04DF7F06AE7DF3;7628.
+(rerunfilecheck)             Checksum: 31674A481656028400361F67BD553337;7085.
 )
 
 Here is how much of LuaTeX's memory you used:
- 21398 strings out of 475506
- 156268,953878 words of node,token memory allocated
- 571 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 1 penalty, 1 glyph, 17 attribute, 5
-9 glue_spec, 10 attribute_list, 1 write, 2 pdf_action nodes
-   avail lists: 1:1,2:1289,3:521,4:132,5:965,6:93,7:16511,8:89,9:552,10:21,11:18
-63
- 43961 multiletter control sequences out of 65536+600000
- 93 fonts using 7186695 bytes
- 72i,8n,75p,729b,1104s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 21500 strings out of 475506
+ 195336,953878 words of node,token memory allocated
+ 559 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 1 penalty, 1 glyph, 15 attribute, 5
+9 glue_spec, 9 attribute_list, 1 write, 1 pdf_action nodes
+   avail lists: 2:1302,3:609,4:120,5:1017,6:92,7:17139,8:45,9:547,10:20,11:1829
+ 44041 multiletter control sequences out of 65536+600000
+ 94 fonts using 7268095 bytes
+ 72i,9n,75p,809b,959s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {C:/Users/fonta/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}{C:/U
 sers/fonta/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}<C:/Us
 ers/fonta/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb><C:/Use
@@ -1079,10 +1113,11 @@ ta/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/fonta
 /AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/fonta/Ap
 pData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri10.pfb><C:/Users/fonta/App
 Data/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri8.pfb><C:/Users/fonta/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb>
-Output written on report.pdf (5 pages, 314631 bytes).
+ta/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy7.pfb><C:/Users/fonta/AppData
+/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb>
+Output written on report.pdf (6 pages, 703153 bytes).
 
-PDF statistics: 282 PDF objects out of 1000 (max. 8388607)
- 88 named destinations out of 1000 (max. 131072)
- 297 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 289 PDF objects out of 1000 (max. 8388607)
+ 87 named destinations out of 1000 (max. 131072)
+ 273 words of extra memory for PDF output out of 10000 (max. 100000000)
 

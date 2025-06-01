@@ -1,0 +1,336 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+% Presentation theme
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% Title information
+\title{Conversational Toxicity Detection and Real-Time Toxicity Assessment using BERT-based Models}
+\subtitle{A Personality Classification Approach}
+\author{Emanuele Fontana}
+\institute{Università degli Studi di Bari Aldo Moro}
+\date{}
+
+\begin{document}
+
+% Title slide
+\frame{\titlepage}
+
+% Table of Contents
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Introduction and Motivations}
+
+\begin{frame}
+\frametitle{Problem and Motivations}
+\begin{itemize}
+\item Online conversation platforms often contain toxic interactions
+\item Traditional approaches focus on individual messages or keywords
+\item Need to capture complex conversational dynamics
+\item Focus on Italian conversations with psychologically abusive behaviors
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Work Objectives}
+\begin{block}{Main Objective}
+Develop a comprehensive system that combines:
+\begin{itemize}
+\item Personality classification (28 types)
+\item Real-time toxicity detection
+\item Conversational context analysis
+\end{itemize}
+\end{block}
+
+\begin{block}{Contributions}
+\begin{itemize}
+\item BERT-based system for Italian conversations
+\item Synthetic non-toxic data generation
+\item Hybrid approach: zero-shot + fine-tuning
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Dataset}
+
+\begin{frame}
+\frametitle{Dataset Construction}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Existing Toxic Dataset:}
+\begin{itemize}
+\item Annotated Italian conversations
+\item Various toxicity types
+\item Emotional manipulation
+\item Psychological violence
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{Generated Non-Toxic Dataset:}
+\begin{itemize}
+\item Google Gemini API
+\item Healthy conversations
+\item Positive dynamics
+\item Corpus balancing
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{0.5cm}
+\begin{block}{Generation Pipeline}
+\begin{itemize}
+\item Temperature: 1.8 for variety
+\item Format validation with regex
+\item Multi-level quality control
+\item Integration and standardization
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Methodology}
+
+\begin{frame}
+\frametitle{Overall Approach}
+\begin{block}{Three Main Components}
+\begin{enumerate}
+\item \textbf{Binary Classification}: Traditional Machine Learning
+\item \textbf{Personality Classification}: BERT zero-shot + fine-tuning
+\item \textbf{Real-Time Detection}: System based on personality patterns
+\end{enumerate}
+\end{block}
+
+\begin{block}{BERT Model Used}
+\texttt{BERT-base-italian-xxl-cased}
+\begin{itemize}
+\item Specialized for Italian language
+\item 28 personality types
+\item Context window of 512 tokens
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Binary Classification - Baseline}
+\begin{columns}
+\begin{column}{0.6\textwidth}
+\textbf{Compared Approaches:}
+\begin{itemize}
+\item \textbf{Approach 1}: Raw text + TF-IDF
+\item \textbf{Approach 2}: Italian preprocessing + TF-IDF
+\end{itemize}
+
+\textbf{Italian Preprocessing:}
+\begin{itemize}
+\item SpaCy (it\_core\_news\_sm)
+\item Lemmatization
+\item Stop words removal
+\item Italian tokenization
+\end{itemize}
+\end{column}
+\begin{column}{0.4\textwidth}
+\textbf{Hyperparameter Tuning:}
+\begin{itemize}
+\item Logistic Regression
+\item C: [0.01, 0.1, 1, 10]
+\item Penalty: ['l1', 'l2']
+\item 5-fold cross-validation
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Personality Classification}
+\begin{block}{Zero-Shot Approach}
+\begin{itemize}
+\item Pre-trained BERT embeddings
+\item Detailed personality descriptions
+\item Cosine similarity for matching
+\item Incremental context construction
+\end{itemize}
+\end{block}
+
+\begin{block}{Fine-Tuned Approach}
+\begin{itemize}
+\item Dropout regularization (0.3)
+\item AdamW optimizer
+\item Early stopping on validation loss
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Experimental Results}
+
+\begin{frame}
+\frametitle{Binary Classification Results}
+\begin{table}
+\centering
+\caption{Binary Classification Performance}
+\begin{tabular}{lcccc}
+\toprule
+Approach & Accuracy & F1-Score & Precision & Recall \\
+\midrule
+Without Preprocessing & 1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+With Preprocessing & 1.0000 & 1.0000 & 1.0000 & 1.0000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{alertblock}{Important Insight}
+\begin{itemize}
+\item Identical performance for both approaches
+\item Preprocessing requires 20x more computational time
+\item \textbf{Recommendation}: Use raw text for efficiency
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+\begin{frame}
+\frametitle{Personality Classification Results}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Zero-Shot:}
+\begin{table}
+\centering
+\begin{tabular}{lc}
+\toprule
+Metric & Score \\
+\midrule
+Accuracy & 0.0268 \\
+Macro F1 & 0.0020 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{Fine-Tuned:}
+\begin{table}
+\centering
+\begin{tabular}{lc}
+\toprule
+Metric & Score \\
+\midrule
+Accuracy & 0.5628 \\
+Macro F1 & 0.5015 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\end{column}
+\end{columns}
+
+\vspace{0.5cm}
+\begin{block}{Analysis}
+\begin{itemize}
+\item \textbf{Significant improvement}: 2.68\% → 56.28\% accuracy
+\item Zero-shot limited in generalizing personality types
+\item Fine-tuning captures complex conversational dynamics
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Real-Time Detection}
+\begin{table}
+\centering
+\caption{Real-Time System Performance}
+\begin{tabular}{lc}
+\toprule
+Metric & Score \\
+\midrule
+Accuracy & 0.9884 \\
+Precision & 0.9943 \\
+Recall & 0.8889 \\
+F1-Score & 0.9915 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{block}{Scoring Mechanism}
+\begin{itemize}
+\item Message-by-message analysis
+\item Weighted scoring based on personality
+\item Alert threshold: 0.3
+\item Conversational context adaptation
+\end{itemize}
+\end{block}
+\end{frame}
+
+\section{Conclusions}
+
+\begin{frame}
+\frametitle{Main Contributions}
+\begin{block}{Key Results}
+\begin{itemize}
+\item \textbf{Binary Classification}: Perfect performance without preprocessing
+\item \textbf{Personality}: Fine-tuning significantly outperforms zero-shot
+\item \textbf{Real-Time}: 98.84\% accuracy in toxicity detection
+\end{itemize}
+\end{block}
+
+\begin{block}{Innovations}
+\begin{itemize}
+\item First BERT-based system for Italian toxicity detection
+\item Integration of personality classification + toxicity detection
+\item Automatic pipeline for non-toxic data generation
+\item Adaptive system with weighted scoring
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Limitations and Future Work}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\textbf{Current Limitations:}
+\begin{itemize}
+\item Specific to Italian language
+\item 28 personality framework
+\item Limited context window (512 tokens)
+\item Domain-specific dataset
+\end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\textbf{Future Directions:}
+\begin{itemize}
+\item Multilingual extension
+\item Larger datasets
+\item GPT-based architectures
+\item Real-world deployment
+\item Extended context windows
+\end{itemize}
+\end{column}
+\end{columns}
+
+\vspace{0.5cm}
+\begin{block}{Availability}
+Code and dataset available on GitHub: \\
+\url{https://github.com/Fonty02/NLP/tree/main/Exam}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Thank You for Your Attention}
+\begin{center}
+
+\vspace{1cm}
+\Large{Emanuele Fontana}\\
+\normalsize{e.fontana7@studenti.uniba.it}
+
+\vspace{0.5cm}
+\normalsize{Università degli Studi di Bari Aldo Moro}
+\end{center}
+\end{frame}
+
+\end{document}
