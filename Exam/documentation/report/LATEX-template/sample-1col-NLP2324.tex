@@ -143,6 +143,42 @@ The fine-tuned model architecture includes BERT-base-italian-xxl-cased as the ba
 
 The real-time detection system analyzes conversations message-by-message, using a weighted scoring mechanism that predicts personality type for each incoming message using conversational context, calculates toxicity scores based on personality classification confidence, applies weighted scoring where toxic personalities increase the score and healthy personalities decrease it, and triggers toxicity alerts when the average weighted score exceeds a threshold (0.3).
 
+\subsubsection{Weighted Scoring Formula}
+
+The real-time toxicity detection employs a weighted scoring mechanism based on the following formula:
+
+\begin{equation}
+\text{Toxic Score} = \sum_{i=1}^{n} w_i \cdot c_i
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $n$ is the number of messages processed so far
+    \item $w_i$ is the weight for message $i$:
+    \begin{equation}
+    w_i = \begin{cases} 
+    +1 & \text{if personality}_i \in \text{Toxic Personalities} \\
+    -0.5 & \text{if personality}_i \in \text{Healthy Personalities} \\
+    0 & \text{otherwise}
+    \end{cases}
+    \end{equation}
+    \item $c_i$ is the confidence score for the personality prediction of message $i$
+\end{itemize}
+
+The average weighted toxicity score is calculated as:
+
+\begin{equation}
+\text{Average Toxic Score} = \frac{\text{Toxic Score}}{n}
+\end{equation}
+
+A conversation is flagged as toxic when:
+
+\begin{equation}
+\text{Average Toxic Score} > \theta
+\end{equation}
+
+where $\theta = 0.3$ is the toxicity threshold. This threshold was empirically determined to balance precision and recall, providing immediate detection capability while minimizing false positives.
+
 
 \section{Experimental Setup and Results}
 
