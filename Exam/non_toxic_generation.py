@@ -5,16 +5,16 @@ import time
 import random
 from pathlib import Path
 import re
-from dotenv import load_dotenv  # <--- AGGIUNGI QUESTO
-load_dotenv()  # <--- E QUESTO
+from dotenv import load_dotenv 
+load_dotenv()  
 
-# --- CONFIGURAZIONE ---
-OUTPUT_CSV_PATH = Path("generated_dataset.csv") # Percorso del file CSV di output
-NUM_CONVERSATIONS = 500  # Numero di conversazioni da generare
+# --- CONFIGURATION ---
+OUTPUT_CSV_PATH = Path("generated_dataset.csv") 
+NUM_CONVERSATIONS = 500  
 API_CALL_DELAY = 0.5
 MAX_RETRIES = 1
 
-# Ottieni la API Key (preferibilmente da variabile d'ambiente)
+
 api_key = os.getenv("GOOGLE_API_KEY")
 
 if not api_key:
@@ -39,7 +39,7 @@ safety_settings = [
     {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
 ]
 
-# PROMPT PERSONALIZZABILE
+
 GENERATION_PROMPT = """
 Genera una conversazione non tossica tra due persone in una coppia, seguendo questi tipi di relazioni non tossiche:
 - Entusiasta e Sostenitore
@@ -110,30 +110,25 @@ def parse_llm_response(response_text: str) -> dict:
             explanation_text = line.replace('SPIEGAZIONE:', '').strip()
             continue          
         elif in_conversation:
-            # Prendi semplicemente la riga così com'è se contiene una battuta numerata
+
             if re.match(r'\d+\.', line):
                 conversation_lines.append(line.strip())
-            # Se non inizia con un numero, potrebbe essere una continuazione
             elif conversation_lines and not line.startswith(('SPIEGAZIONE:', 'TIPO_', 'NOME')):
-                # Aggiungi come continuazione alla battuta precedente
                 conversation_lines[-1] += ' ' + line.strip()
                     
         elif not in_conversation and explanation_text and not line.startswith('FRASE_TOSSICA:'):
-            # Continua ad aggiungere alla spiegazione
             explanation_text += ' ' + line
     
-    # Unisci le frasi con esattamente 11 spazi come nell'esempio
+
     data['conversation'] = '           '.join(conversation_lines)
     
-    # Assegna la spiegazione
+
     if explanation_text:
         data['explaination'] = explanation_text
     data['toxic'] = 0
     return data
 
 def clean_data(data: dict) -> dict:
-    """Pulisce e valida i dati estratti."""
-    # Valori di default se mancanti
     if 'name1' not in data or not data['name1']:
         data['name1'] = f"Persona{random.randint(1,999)}"
     if 'name2' not in data or not data['name2']:
@@ -147,17 +142,15 @@ def clean_data(data: dict) -> dict:
     if 'toxic' not in data or not data['toxic']:
         data['toxic'] = 0
     
-    # Pulisci i testi
+
     for key in data:
         if isinstance(data[key], str):
             data[key] = re.sub(r'\s+', ' ', data[key]).strip()
-            # Sostituisci virgolette singole con doppie per mantenere il formato
             data[key] = data[key].replace("'", '"')
     
     return data
 
 def append_to_csv(data: dict, file_path: Path):
-    """Aggiunge una riga al file CSV."""
     headers = ["person_couple", "conversation", "name1", "name2", "explaination", "toxic"]
     
     with file_path.open('a', newline='', encoding='utf-8') as csvfile:
@@ -165,7 +158,6 @@ def append_to_csv(data: dict, file_path: Path):
         writer.writerow(data)
 
 def generate_conversation(model) -> dict:
-    """Genera una conversazione usando l'LLM."""
     for attempt in range(MAX_RETRIES):
         try:
             response = model.generate_content(
@@ -194,38 +186,22 @@ def generate_conversation(model) -> dict:
     return None
 
 def main():
-    """Funzione principale dello script."""
-    print("--- Avvio Generazione Dataset Conversazioni Tossiche ---")
-    print(f"Generazione di {NUM_CONVERSATIONS} conversazioni...")
-    print(f"Output: {OUTPUT_CSV_PATH}")
 
-    # Inizializza il file CSV
-    print("Inizializzazione file CSV...")
+
     initialize_csv(OUTPUT_CSV_PATH)
-    
-    # Inizializza modello LLM
-    print(f"Inizializzazione modello LLM: {MODEL_NAME}")
     model = genai.GenerativeModel(MODEL_NAME)
-
-    # Genera le conversazioni
     start_time = time.time()
     successful_generations = 0
     failed_generations = 0
 
-    for i in range(NUM_CONVERSATIONS):
-        print(f"\n[{i + 1}/{NUM_CONVERSATIONS}] Generando conversazione tossica...")
-        
+    for i in range(NUM_CONVERSATIONS): 
         conversation_data = generate_conversation(model)
-        
         if conversation_data:
             append_to_csv(conversation_data, OUTPUT_CSV_PATH)
             successful_generations += 1
-            print(f"  -> Conversazione generata: {conversation_data['person_couple']} - {conversation_data['name1']} e {conversation_data['name2']}")
         else:
             failed_generations += 1
-            print(f"  -> Impossibile generare conversazione")
-        
-        # Aggiungi un ritardo per rispettare i limiti API
+        #Add a delay to respect API limits
         if i < NUM_CONVERSATIONS - 1:
             print(f"  Attesa {API_CALL_DELAY}s...")
             time.sleep(API_CALL_DELAY)
