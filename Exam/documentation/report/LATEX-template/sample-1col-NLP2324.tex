@@ -65,7 +65,7 @@ Automatic detection of toxicity in online conversations is an active and crucial
 
 Most research on toxicity has focused on the English language. However, there is a growing need to address this problem in other languages as well, such as Italian. To overcome the scarcity of annotated data, especially in specific contexts or underrepresented languages, synthetic data generation through LLMs has emerged as a promising strategy \cite{SyntheticDataLLMSurvey2025}. IDaToC is an example of a dataset generated in this way, containing toxic conversations in Italian.
 
-Our work is positioned at the intersection of these areas, proposing a real-time toxicity detection system for Italian language conversations. This system is distinguished by the integration of fine-grained personality classification (28 types) based on BERT (\texttt{BERT-base-italian-xxl-cased}), using both fine-tuning and zero-shot techniques. Furthermore, it addresses the challenge of data scarcity through the generation of non-toxic conversational data in Italian. The objective is to provide a more contextualized and sensitive toxicity assessment to interpersonal dynamics, with a focus on subtle forms of psychological abuse.
+Our work is positioned at the intersection of these areas, proposing a real-time toxicity detection system for Italian language conversations. This system is distinguished by the integration of fine-grained personality classification based on BERT (\texttt{BERT-base-italian-xxl-cased}), using both fine-tuning and zero-shot techniques. Furthermore, it addresses the challenge of data scarcity through the generation of non-toxic conversational data in Italian. The objective is to provide a more contextualized and sensitive toxicity assessment to interpersonal dynamics, with a focus on subtle forms of psychological abuse.
 
 \section{Dataset}
 
@@ -83,17 +83,13 @@ The foundation of our dataset construction is built upon a pre-existing collecti
 
 To create a balanced corpus, we developed a comprehensive generation pipeline for non-toxic conversations using Google's Gemini API. This automated approach ensures diversity while maintaining conversational authenticity and cultural appropriateness for Italian speakers.
 
-\subsubsection{Generation Architecture and Configuration}
-
 The generation system employs Gemini-2.0-flash-lite as the base model with carefully tuned parameters to ensure conversational diversity and authenticity: temperature 1.8 to encourage creative and varied responses, top-p 0.95 for nucleus sampling to balance creativity with coherence, top-k 40 to maintain reasonable vocabulary constraints, and max output tokens 2048 to accommodate detailed conversations.
 
 Safety settings are configured to block medium and above content for harassment, hate speech, sexually explicit material, and dangerous content, ensuring the generated conversations remain within appropriate boundaries while still capturing toxic behavioral patterns.
 
-\subsubsection{Prompt Engineering for Conversational Realism}
 
 The generation process utilizes carefully crafted prompts designed to elicit realistic conversational patterns. For toxic conversations, the prompt structure includes specification of toxic relationship dynamics, requirements for numbered alternating dialogue between two participants, and emphasis on Italian language usage and cultural context. For non-toxic conversations, the prompts focus on healthy relationship dynamics such as "Entusiasta e Sostenitore", "Preoccupato e Rassicurante", "Affettuoso e Rispettoso", and "Tranquillo e Confortante".
 
-\subsubsection{Quality Control and Validation}
 
 The generation pipeline implements multiple validation layers: format validation through regex patterns to ensure proper conversation structure with numbered, quoted messages; content completeness verification that all required fields (couple type, names, conversation, explanation) are present; conversation length checks to ensure minimum message requirements for meaningful interactions; and retry mechanism with up to 3 attempts per conversation with exponential backoff for failed generations.
 
@@ -115,24 +111,26 @@ To establish a baseline understanding of the dataset's separability, we implemen
 
 We employ TF-IDF (Term Frequency-Inverse Document Frequency) vectorization as our primary feature extraction method. Two distinct approaches are evaluated:
 
-\textbf{Approach 1: Raw Text Processing} involves direct application of TF-IDF to unprocessed conversation text with minimal computational overhead and preservation of original linguistic patterns and colloquialisms. \textbf{Approach 2: Italian Language Preprocessing} utilizes spaCy's Italian language model (it\_core\_news\_sm) with tokenization using Italian-specific rules, lemmatization to reduce words to their base forms, stop word removal using Italian stop word lists, and punctuation and numeric token filtering.
+\textbf{Approach 1: Raw Text Processing} involves direct application of TF-IDF to unprocessed conversation text with minimal computational overhead and preservation of original linguistic patterns and colloquialisms.
+
+
+\textbf{Approach 2: Italian Language Preprocessing} utilizes spaCy's Italian language model (it\_core\_news\_sm) with tokenization using Italian-specific rules, lemmatization to reduce words to their base forms, stop word removal using Italian stop word lists, and punctuation and numeric token filtering.
 
 \subsubsection{Model Architecture and Hyperparameter Optimization}
 
 The classification employs Logistic Regression with comprehensive hyperparameter tuning through nested cross-validation. \textbf{Hyperparameter Grid} includes regularization strength (C) values [0.01, 0.1, 1, 10], penalty types ['l1', 'l2'] for feature selection and ridge regularization, maximum iterations [100, 200, 500] to ensure convergence, and 'liblinear' solver for compatibility with both L1 and L2 penalties. \textbf{Cross-Validation Strategy} employs inner loop 5-fold cross-validation for hyperparameter selection, outer loop 5-fold cross-validation for unbiased performance estimation, grid search optimization using accuracy as the primary metric, and final model evaluation on held-out test set (30\% of data).
 
-\subsection{Dataset Preparation and Personality Tagging}
 
 \subsection{BERT-based Personality Classification}
 
 For the BERT-based personality classification task, the dataset consists of conversational exchanges between individuals exhibiting various personality types, categorized into toxic and non-toxic relationships. We developed a robust preprocessing pipeline that validates conversation format using regex patterns to ensure proper message structure, extracts and cleans individual messages from conversational threads, maps personality couple types to individual personality classifications, creates personality tokens in the format [PERSONALITY] for model training, and applies context-aware tagging to maintain conversational coherence.
 
-The personality mapping includes 28 distinct personality types, ranging from toxic patterns (e.g., PSICOPATICO, MANIPOLATORE, NARCISISTA) to healthy relationship dynamics (e.g., AFFETTUOSO, RISPETTOSO, RASSICURANTE).
+The personality mapping includes distinct personality types, ranging from toxic patterns (e.g., PSICOPATICO, MANIPOLATORE, NARCISISTA) to healthy relationship dynamics (e.g., AFFETTUOSO, RISPETTOSO, RASSICURANTE).
 
 We implemented two complementary approaches for personality classification:
 
 \subsubsection{Zero-Shot Learning Approach}
-The zero-shot method leverages pre-trained BERT embeddings to classify personalities without task-specific training. The process involves creating detailed personality descriptions for each of the 28 personality types, computing contextual embeddings for both conversation messages and personality descriptions, using cosine similarity to match messages with the most appropriate personality type, and building conversational context incrementally to improve prediction accuracy.
+The zero-shot method leverages pre-trained BERT embeddings to classify personalities without task-specific training. The process involves creating detailed personality descriptions for each of the personality types, computing contextual embeddings for both conversation messages and personality descriptions, using cosine similarity to match messages with the most appropriate personality type, and building conversational context incrementally to improve prediction accuracy.
 
 \subsubsection{Fine-Tuned Classification Model}
 The fine-tuning approach adapts BERT specifically for personality classification by extending the tokenizer vocabulary with personality tokens, implementing a custom PersonalityClassifier with dropout regularization, and training with early stopping based on validation loss.
@@ -318,7 +316,7 @@ The fine-tuned BERT model demonstrated substantial improvements over zero-shot l
 Since the fine-tuned model was able to classify personalities with an accuracy of 56.28\%, the real-time detection system effectively utilized these predictions to achieve impressive results in real-time toxicity detection. The system's high accuracy (98.84\%) indicates that it is highly effective at identifying toxic messages in real-time conversations. The weighted scoring mechanism allows the system to adaptively respond to the conversational context.
 
 \subsection{Current Limitations}
-Current limitations include: (1) language specificity as the system is currently optimized for Italian conversations, (2) personality framework dependency on a specific 28-personality classification scheme, and (3) context window limitations imposed by BERT's maximum sequence length (512 tokens).
+Current limitations include: (1) language specificity as the system is currently optimized for Italian conversations, (2) personality framework dependency on a specific personality classification scheme, and (3) context window limitations imposed by BERT's maximum sequence length (512 tokens).
 
 \subsection{Future Directions}
 Future research directions encompass: (1) multilingual extension by adapting the system for other languages, (2) larger datasets expansion for improved generalization, (3) advanced architectures exploration including GPT-based models and longer context windows, and (4) real-world deployment integration with chat platforms and social media monitoring.
