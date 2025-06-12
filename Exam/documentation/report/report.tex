@@ -81,7 +81,7 @@ The generation system employs Gemini-2.0-flash-lite as the base model with caref
 \begin{itemize}
 \item \textbf{Temperature}: 1.8 to encourage creative and varied responses
 \item \textbf{Top-p}: 0.95 for nucleus sampling to balance creativity with coherence
-\item \textbf{Top-k}: 40 to maintain reasonable vocabulary constraints
+\item \textbf{Top-k}: 40 for limiting selection to the 40 most probable tokens at each generation step
 \item \textbf{Max Output Tokens}: 2048 to accommodate detailed conversations
 \end{itemize}
 

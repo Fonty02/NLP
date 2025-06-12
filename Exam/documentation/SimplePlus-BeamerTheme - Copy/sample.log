@@ -1,11 +1,11 @@
-This is LuaHBTeX, Version 1.21.0 (MiKTeX 25.3) (format=lualatex 2025.3.29)  5 JUN 2025 11:09
+This is LuaHBTeX, Version 1.21.0 (MiKTeX 25.3) (format=lualatex 2025.3.29)  12 JUN 2025 10:36
  system commands enabled.
  file:line:error style messages enabled.
-**c:/Users/fonta/Desktop/Uni/Repo/NLP/Exam/documentation/SimplePlus-BeamerTheme
-/sample
+**"c:/Users/fonta/Desktop/Uni/Repo/NLP/Exam/documentation/SimplePlus-BeamerThem
+e - Copy/sample"
 
-(c:/Users/fonta/Desktop/Uni/Repo/NLP/Exam/documentation/SimplePlus-BeamerTheme/
-sample.tex
+("c:/Users/fonta/Desktop/Uni/Repo/NLP/Exam/documentation/SimplePlus-BeamerTheme
+ - Copy/sample.tex"
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 Lua module: luaotfload 2024-12-03 v3.29 Lua based OpenType font support
@@ -1514,7 +1514,7 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <10.95> not available
 [7
 
 ]
-Overfull \vbox (13.98558pt too high) detected at line 217
+Overfull \vbox (13.98558pt too high) detected at line 216
  []
 
 
@@ -1534,16 +1534,16 @@ Overfull \vbox (13.98558pt too high) detected at line 217
 File: figures/confusion_matrix_zero_shot.png Graphic file (type png)
 <use figures/confusion_matrix_zero_shot.png>
 Package luatex.def Info: figures/confusion_matrix_zero_shot.png  used on input 
-line 307.
+line 306.
 (luatex.def)             Requested size: 205.72205pt x 181.9808pt.
 <figures/confusion_matrix_finetuned.png, id=106, 939.51pt x 859.2903pt>
 File: figures/confusion_matrix_finetuned.png Graphic file (type png)
 <use figures/confusion_matrix_finetuned.png>
 Package luatex.def Info: figures/confusion_matrix_finetuned.png  used on input 
-line 307.
+line 306.
 (luatex.def)             Requested size: 205.72205pt x 188.15285pt.
 
-Overfull \vbox (19.02946pt too high) detected at line 307
+Overfull \vbox (19.02946pt too high) detected at line 306
  []
 
 
@@ -1558,7 +1558,7 @@ File: figures/confusion_matrix_realtime_weighted_score.png Graphic file (type p
 ng)
 <use figures/confusion_matrix_realtime_weighted_score.png>
 Package luatex.def Info: figures/confusion_matrix_realtime_weighted_score.png  
-used on input line 336.
+used on input line 335.
 (luatex.def)             Requested size: 202.35902pt x 151.76927pt.
 
 
@@ -1575,7 +1575,7 @@ used on input line 336.
 ]
 
 LaTeX Font Warning: Font shape `TU/SegoeUIEmoji(0)/bx/n' undefined
-(Font)              using `TU/SegoeUIEmoji(0)/m/n' instead on input line 391.
+(Font)              using `TU/SegoeUIEmoji(0)/m/n' instead on input line 390.
 
 
 
@@ -1611,10 +1611,10 @@ Here is how much of LuaTeX's memory you used:
    19 hlist, 7 vlist, 4 rule, 2 disc, 3 local_par, 46 glue, 11 kern, 14 penalty,
  37 glyph, 97 attribute, 65 glue_spec, 50 attribute_list, 4 write, 2 pdf_literal
 , 10 pdf_colorstack nodes
-   avail lists: 2:1858,3:628,4:244,5:187,6:67,7:2173,8:45,9:631,10:23,11:184
+   avail lists: 2:1858,3:628,4:244,5:187,6:64,7:2026,8:45,9:631,10:23,11:184
  61917 multiletter control sequences out of 65536+600000
  60 fonts using 45794927 bytes
- 128i,17n,116p,475b,1159s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 128i,17n,116p,484b,1159s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/windows/Fonts/seguiemj.ttf>{C:/Users/fonta/AppData/Local/Programs/MiKTeX/fon
 ts/enc/dvips/lm/lm-mathit.enc}<c:/users/fonta/appdata/local/programs/miktex/font
 s/opentype/public/lm/lmsans10-oblique.otf>{C:/Users/fonta/AppData/Local/Programs
@@ -1635,7 +1635,7 @@ s/MiKTeX/fonts/type1/public/lm/lmmi10.pfb><C:/Users/fonta/AppData/Local/Programs
 /MiKTeX/fonts/type1/public/lm/lmss10.pfb><C:/Users/fonta/AppData/Local/Programs/
 MiKTeX/fonts/type1/public/lm/lmss8.pfb><C:/Users/fonta/AppData/Local/Programs/Mi
 KTeX/fonts/type1/public/lm/lmsy10.pfb>
-Output written on sample.pdf (15 pages, 398500 bytes).
+Output written on sample.pdf (15 pages, 398474 bytes).
 
 PDF statistics: 228 PDF objects out of 1000 (max. 8388607)
  37 named destinations out of 1000 (max. 131072)
