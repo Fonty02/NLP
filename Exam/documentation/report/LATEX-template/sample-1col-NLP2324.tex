@@ -36,7 +36,7 @@ email=e.fontana7@studenti.uniba.it,
 \address[1]{Università degli Studi di Bari Aldo Moro}
 
 \begin{abstract}
-This paper presents two studies on conversational toxicity. The first study investigates toxic conversation detection using simple Machine Learning models. The second study describes a novel and well-documented BERT-based system for real-time toxic conversation tagging and recognition through fine-tuning, which also performs personality classification in dialogues, incorporating zero-shot learning and fine-tuning approaches. Both studies yielded excellent results, with the proposed methodologies achieving significant performance in their respective tasks and demonstrating the effectiveness of context-aware processing in conversational AI applications.
+This paper presents two studies on conversational toxicity. The first study investigates toxic conversation detection using simple Machine Learning models. The second study describes a novel BERT-based system for real-time toxic conversation tagging and recognition through fine-tuning, which also performs personality classification in dialogues, incorporating zero-shot learning and fine-tuning approaches. Both studies yielded excellent results, with the proposed methodologies achieving significant performance in their respective tasks and demonstrating the effectiveness of context-aware processing in conversational AI applications.
 \end{abstract}
 
 
@@ -83,12 +83,12 @@ The foundation of our dataset construction is built upon a pre-existing collecti
 
 To create a balanced corpus, we developed a comprehensive generation pipeline for non-toxic conversations using Google's Gemini API. This automated approach ensures diversity while maintaining conversational authenticity and cultural appropriateness for Italian speakers.
 
-The generation system employs Gemini-2.0-flash-lite as the base model with carefully tuned parameters to ensure conversational diversity and authenticity: temperature 1.8 to encourage creative and varied responses, top-p 0.95 for nucleus sampling to balance creativity with coherence, top-k 40 to maintain reasonable vocabulary constraints, and max output tokens 2048 to accommodate detailed conversations.
+The generation system employs Gemini-2.0-flash-lite as the base model with carefully tuned parameters to ensure conversational diversity and authenticity: temperature 1.8 to encourage creative and varied responses, top-p 0.95 for nucleus sampling to balance creativity with coherence, top-k 40 to maintain reasonable vocabulary constraints, and max output tokens 2048 to accommodate detailed conversations and explanations.
 
 Safety settings are configured to block medium and above content for harassment, hate speech, sexually explicit material, and dangerous content, ensuring the generated conversations remain within appropriate boundaries while still capturing toxic behavioral patterns.
 
 
-The generation process utilizes carefully crafted prompts designed to elicit realistic conversational patterns. For toxic conversations, the prompt structure includes specification of toxic relationship dynamics, requirements for numbered alternating dialogue between two participants, and emphasis on Italian language usage and cultural context. For non-toxic conversations, the prompts focus on healthy relationship dynamics such as "Entusiasta e Sostenitore", "Preoccupato e Rassicurante", "Affettuoso e Rispettoso", and "Tranquillo e Confortante".
+The generation process utilizes carefully crafted prompts designed to elicit realistic conversational patterns. The prompts focus on healthy relationship dynamics such as "Entusiasta e Sostenitore", "Preoccupato e Rassicurante", "Affettuoso e Rispettoso", and "Tranquillo e Confortante".
 
 
 The generation pipeline implements multiple validation layers: format validation through regex patterns to ensure proper conversation structure with numbered, quoted messages; content completeness verification that all required fields (couple type, names, conversation, explanation) are present; conversation length checks to ensure minimum message requirements for meaningful interactions; and retry mechanism with up to 3 attempts per conversation with exponential backoff for failed generations.
@@ -116,6 +116,8 @@ We employ TF-IDF (Term Frequency-Inverse Document Frequency) vectorization as ou
 
 \textbf{Approach 2: Italian Language Preprocessing} utilizes spaCy's Italian language model (it\_core\_news\_sm) with tokenization using Italian-specific rules, lemmatization to reduce words to their base forms, stop word removal using Italian stop word lists, and punctuation and numeric token filtering.
 
+Since stopwords and lemmatization can remove important contextual information like negation of a word, we wanted to test the impact of these preprocessing steps on the classification performance.
+
 \subsubsection{Model Architecture and Hyperparameter Optimization}
 
 The classification employs Logistic Regression with comprehensive hyperparameter tuning through nested cross-validation. \textbf{Hyperparameter Grid} includes regularization strength (C) values [0.01, 0.1, 1, 10], penalty types ['l1', 'l2'] for feature selection and ridge regularization, maximum iterations [100, 200, 500] to ensure convergence, and 'liblinear' solver for compatibility with both L1 and L2 penalties. \textbf{Cross-Validation Strategy} employs inner loop 5-fold cross-validation for hyperparameter selection, outer loop 5-fold cross-validation for unbiased performance estimation, grid search optimization using accuracy as the primary metric, and final model evaluation on held-out test set (30\% of data).
@@ -133,7 +135,7 @@ We implemented two complementary approaches for personality classification:
 The zero-shot method leverages pre-trained BERT embeddings to classify personalities without task-specific training. The process involves creating detailed personality descriptions for each of the personality types, computing contextual embeddings for both conversation messages and personality descriptions, using cosine similarity to match messages with the most appropriate personality type, and building conversational context incrementally to improve prediction accuracy.
 
 \subsubsection{Fine-Tuned Classification Model}
-The fine-tuning approach adapts BERT specifically for personality classification by extending the tokenizer vocabulary with personality tokens, implementing a custom PersonalityClassifier with dropout regularization, and training with early stopping based on validation loss.
+The fine-tuning approach adapts BERT specifically for personality classification by implementing a custom PersonalityClassifier with dropout regularization, and training with early stopping based on validation loss.
 
 The fine-tuned model architecture includes BERT-base-italian-xxl-cased as the base model, custom classification head with dropout (rate: 0.3), AdamW optimizer with linear learning rate scheduling, and maximum sequence length of 512 tokens.
 
@@ -175,7 +177,7 @@ A conversation is flagged as toxic when:
 \text{Average Toxic Score} > \theta
 \end{equation}
 
-where $\theta = 0.3$ is the toxicity threshold. This threshold was empirically determined to balance precision and recall, providing immediate detection capability while minimizing false positives.
+where $\theta = 0.3$ is the toxicity threshold. The idea behind this value is that we prefered to classify non-toxic conversations as toxic rather than the opposite, so we set a low threshold to avoid false negatives.
 
 
 \section{Experimental Setup and Results}

@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.21.0 (MiKTeX 25.3) (format=lualatex 2025.3.29)  7 JUN 2025 15:38
+This is LuaHBTeX, Version 1.21.0 (MiKTeX 25.3) (format=lualatex 2025.3.29)  12 JUN 2025 10:29
  system commands enabled.
  file:line:error style messages enabled.
 **c:/Users/fonta/Desktop/Uni/Repo/NLP/Exam/documentation/report/LATEX-template/
@@ -1392,20 +1392,20 @@ LaTeX Font Info:    Font shape `TU/LibertinusSans(0)/b/n' will be
 
 
 LaTeX Font Info:    Font shape `TU/LibertinusSans(0)/m/n' will be
-(Font)              scaled to size 10.95pt on input line 77.
+(Font)              scaled to size 10.95pt on input line 78.
 LaTeX Font Info:    Font shape `TU/LibertinusSans(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 77.
+(Font)              scaled to size 10.0pt on input line 78.
 LaTeX Font Info:    Font shape `TU/LibertinusSerif(0)/m/n' will be
-(Font)              scaled to size 10.0pt on input line 77.
+(Font)              scaled to size 10.0pt on input line 78.
 [1
 
 <./cc-by.pdf>]
 
 [2]
 LaTeX Font Info:    Font shape `TU/LibertinusSerif(0)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 149.
+(Font)              scaled to size 5.0pt on input line 151.
 LaTeX Font Info:    Font shape `TU/LibertinusSans(0)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 189.
+(Font)              scaled to size 10.0pt on input line 191.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1416,7 +1416,7 @@ File: figures/confusion_matrix_with_text_preprocessing.png Graphic file (type p
 ng)
 <use figures/confusion_matrix_with_text_preprocessing.png>
 Package luatex.def Info: figures/confusion_matrix_with_text_preprocessing.png  
-used on input line 202.
+used on input line 204.
 (luatex.def)             Requested size: 181.18439pt x 144.06734pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1427,31 +1427,29 @@ File: figures/confusion_matrix_without_text_preprocessing.png Graphic file (typ
 e png)
 <use figures/confusion_matrix_without_text_preprocessing.png>
 Package luatex.def Info: figures/confusion_matrix_without_text_preprocessing.pn
-g  used on input line 209.
+g  used on input line 211.
 (luatex.def)             Requested size: 181.18439pt x 144.06734pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/confusion_matrix_zero_shot.png, id=58, 807.9786pt x 714.7503pt>
-File: figures/confusion_matrix_zero_shot.png Graphic file (type png)
-<use figures/confusion_matrix_zero_shot.png>
-Package luatex.def Info: figures/confusion_matrix_zero_shot.png  used on input 
-line 235.
-(luatex.def)             Requested size: 181.18439pt x 160.27747pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 
 [3]
+<figures/confusion_matrix_zero_shot.png, id=75, 807.9786pt x 714.7503pt>
+File: figures/confusion_matrix_zero_shot.png Graphic file (type png)
+<use figures/confusion_matrix_zero_shot.png>
+Package luatex.def Info: figures/confusion_matrix_zero_shot.png  used on input 
+line 237.
+(luatex.def)             Requested size: 181.18439pt x 160.27747pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 <figures/training_validation_loss_plot.png, id=76, 859.2903pt x 426.393pt>
 File: figures/training_validation_loss_plot.png Graphic file (type png)
 <use figures/training_validation_loss_plot.png>
 Package luatex.def Info: figures/training_validation_loss_plot.png  used on inp
-ut line 248.
+ut line 250.
 (luatex.def)             Requested size: 181.18439pt x 89.903pt.
 
 
@@ -1461,7 +1459,7 @@ atrix_without_text_preprocessing.png>]
 File: figures/confusion_matrix_finetuned.png Graphic file (type png)
 <use figures/confusion_matrix_finetuned.png>
 Package luatex.def Info: figures/confusion_matrix_finetuned.png  used on input 
-line 270.
+line 272.
 (luatex.def)             Requested size: 181.18439pt x 165.70563pt.
 
 
@@ -1473,7 +1471,7 @@ File: figures/confusion_matrix_realtime_weighted_score.png Graphic file (type p
 ng)
 <use figures/confusion_matrix_realtime_weighted_score.png>
 Package luatex.def Info: figures/confusion_matrix_realtime_weighted_score.png  
-used on input line 298.
+used on input line 300.
 (luatex.def)             Requested size: 181.18439pt x 135.88306pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -1497,14 +1495,14 @@ Package rerunfilecheck Info: File `sample-1col-NLP2324.out' has not changed.
 
 Here is how much of LuaTeX's memory you used:
  40901 strings out of 475506
- 156265,1648299 words of node,token memory allocated
+ 156268,1648299 words of node,token memory allocated
  686 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 1 local_par, 7 glue, 4 kern, 1 penalty, 1 margin_ke
 rn, 3 glyph, 20 attribute, 67 glue_spec, 20 attribute_list, 1 write nodes
-   avail lists: 1:2,2:1314,3:363,4:240,5:1044,6:158,7:16184,8:45,9:862,10:12,11:
-1682,12:1
+   avail lists: 1:2,2:1264,3:364,4:243,5:1035,6:158,7:16118,8:45,9:859,10:8,11:1
+644,12:1
  63156 multiletter control sequences out of 65536+600000
- 149 fonts using 49426891 bytes
+ 149 fonts using 49427147 bytes
  143i,20n,156p,11007b,2732s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/fonta/AppData/Local/Programs/MiKTeX/fonts/opentype/public/libertinus-f
 onts/LibertinusSans-Regular.otf><C:/Users/fonta/AppData/Local/Programs/MiKTeX/fo
@@ -1519,7 +1517,7 @@ nts/opentype/public/libertinus-fonts/LibertinusSerif-Italic.otf><C:/Users/fonta/
 AppData/Local/Programs/MiKTeX/fonts/opentype/public/libertinus-fonts/LibertinusS
 ans-Bold.otf><C:/Users/fonta/AppData/Local/Programs/MiKTeX/fonts/opentype/public
 /libertinus-fonts/LibertinusSerif-Regular.otf>
-Output written on sample-1col-NLP2324.pdf (7 pages, 520645 bytes).
+Output written on sample-1col-NLP2324.pdf (7 pages, 520658 bytes).
 
 PDF statistics: 269 PDF objects out of 1000 (max. 8388607)
  56 named destinations out of 1000 (max. 131072)
