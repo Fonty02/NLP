@@ -111,14 +111,39 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Dataset Generation Parameters}
-  \begin{itemize}
-    \item \textbf{Model}: Gemini-2.0-flash-lite - Fast inference with quality generation
-    \item \textbf{Temperature}: 1.8 - High creativity for diverse conversation styles
-    \item \textbf{Top-p}: 0.95 - Nucleus sampling for coherent text generation
-    \item \textbf{Top-k}: 40 - Limits selection to the 40 most probable tokens at each generation step
-    \item \textbf{Max tokens}: 2048 - Maximum conversation length per generation
-  \end{itemize}
+  \frametitle{Dataset Generation Process}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Generation Workflow}
+        \begin{enumerate}
+          \item \textbf{Prompt Engineering}: Structured prompts for non-toxic conversations
+          \item \textbf{LLM Generation}: Google Gemini API generates Italian dialogues
+          \item \textbf{Response Parsing}: Extract conversation components (names, dialogue, type)
+        \end{enumerate}
+      \end{block}
+      
+      \begin{block}{Safety Measures}
+        \begin{itemize}
+          \item Safety filters to block harmful content
+          \item Retry mechanism for failed generations
+          \item Manual validation of conversation quality
+        \end{itemize}
+      \end{block}
+    \end{column}
+    
+    \begin{column}{0.5\textwidth}      
+      \begin{block}{Output Format}
+        Each generated conversation includes:
+        \begin{itemize}
+          \item Couple type classification
+          \item Two Italian names
+          \item Structured dialogue turns
+          \item Detailed non-toxicity explanation
+          \item Toxicity label (0 = non-toxic)
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % --- Methodology ---
