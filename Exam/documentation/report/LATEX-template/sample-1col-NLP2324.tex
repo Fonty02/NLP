@@ -134,14 +134,53 @@ We implemented two complementary approaches for personality classification:
 \subsubsection{Zero-Shot Learning Approach}
 The zero-shot method leverages pre-trained BERT embeddings to classify personalities without task-specific training. The process involves creating detailed personality descriptions for each of the personality types, computing contextual embeddings for both conversation messages and personality descriptions, using cosine similarity to match messages with the most appropriate personality type, and building conversational context incrementally to improve prediction accuracy.
 
+
 \subsubsection{Fine-Tuned Classification Model}
 The fine-tuning approach adapts BERT specifically for personality classification by implementing a custom PersonalityClassifier with dropout regularization, and training with early stopping based on validation loss.
 
 The fine-tuned model architecture includes BERT-base-italian-xxl-cased as the base model, custom classification head with dropout (rate: 0.3), AdamW optimizer with linear learning rate scheduling, and maximum sequence length of 512 tokens.
 
+\textbf{Training Configuration:}
+The model training employs Cross-Entropy Loss as the primary loss function, formally defined as:
+
+\begin{equation}
+\mathcal{L}_{CE} = -\frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{C} y_{i,c} \log(p_{i,c})
+\end{equation}
+
+where $N$ is the batch size, $C$ is the number of personality classes (27), $y_{i,c}$ is the binary indicator (1 if class $c$ is the correct classification for sample $i$, 0 otherwise), and $p_{i,c}$ is the predicted probability for class $c$ for sample $i$.
+
+The training process includes:
+\begin{itemize}
+    \item Early stopping with patience of 10 epochs to prevent overfitting
+    \item Gradient clipping with max norm 1.0 for training stability
+    \item Learning rate scheduling with linear warmup (100 steps) and decay
+    \item Batch size of 16 with maximum sequence length of 512 tokens
+    \item Validation split of 20\% from training data for monitoring
+\end{itemize}
+
+The model achieved convergence after 15 epochs with a final validation loss of 0.2504.
+
+
 \subsection{Real-Time Toxicity Detection}
 
 The real-time detection system analyzes conversations message-by-message, using a weighted scoring mechanism that predicts personality type for each incoming message using conversational context, calculates toxicity scores based on personality classification confidence, applies weighted scoring where toxic personalities increase the score and healthy personalities decrease it, and triggers toxicity alerts when the average weighted score exceeds a threshold (0.3).
+
+\textbf{Prediction Mechanism:}
+For each incoming message, the system uses the fine-tuned BERT model to predict personality type through the following process:
+
+\begin{enumerate}
+    \item \textbf{Context Construction}: The message is concatenated with previous conversation context in the format: "previous\_message [PERSONALITY] current\_message"
+    \item \textbf{BERT Encoding}: The contextualized message is tokenized and fed through the fine-tuned BERT model
+    \item \textbf{Classification}: The model outputs logits for each of the personality classes
+    \item \textbf{Confidence Extraction}: Softmax is applied to obtain probability distribution, and the maximum probability serves as the confidence score:
+\end{enumerate}
+
+\begin{equation}
+p_i = \frac{e^{z_i}}{\sum_{j=1}^{} e^{z_j}}
+\end{equation}
+
+where $z_i$ are the logits for class $i$, and $\text{confidence} = \max(p_i)$.
+
 
 \subsubsection{Weighted Scoring Formula}
 
@@ -177,7 +216,7 @@ A conversation is flagged as toxic when:
 \text{Average Toxic Score} > \theta
 \end{equation}
 
-where $\theta = 0.3$ is the toxicity threshold. The idea behind this value is that we prefered to classify non-toxic conversations as toxic rather than the opposite, so we set a low threshold to avoid false negatives.
+where $\theta = 0.3$ is the toxicity threshold. The idea behind this value is that we preferred to classify non-toxic conversations as toxic rather than the opposite, so we set a low threshold to avoid false negatives.
 
 
 \section{Experimental Setup and Results}
@@ -331,6 +370,133 @@ The code and dataset are available on GitHub at: \url{https://github.com/Fonty02
 
 %%
 %% If your work has an appendix, this is the place to put it.
+
+\section{Appendix}
+\subsection{Gemini Prompt}
+The following is the prompt used to generate non-toxic conversations with Gemini:
+The following is the prompt used to generate non-toxic conversations with Gemini:
+\begin{lstlisting}[breaklines=true, basicstyle=\scriptsize]
+Genera una conversazione non tossica tra due persone in una coppia, seguendo questi tipi di relazioni non tossiche:
+- Entusiasta e Sostenitore
+- Preoccupato e Rassicurante
+- Affettuoso e Rispettoso
+- Tranquillo e Confortante
+
+La conversazione deve contenere battute numerate alternate tra le due persone.
+Ogni battuta deve essere COMPLETA e ben formattata. Non lasciare frasi a meta.
+La conversazione non deve essere tossica e non deve contenere comportamenti manipolativi, controllo, umiliazione, ricatto emotivo, violenza psicologica.
+
+Fornisci:
+1. Il tipo di coppia (uno dei tipi sopra elencati), SOLO UNO
+2. Due nomi italiani per i partecipanti
+3. Una conversazione non tossica con 8 battute numerate complete
+4. Una spiegazione dettagliata di perche la conversazione non e tossica
+
+Formato richiesto:
+TIPO_COPPIA: [tipo di relazione], SOLO UN TIPO
+NOME1: [nome italiano]
+NOME2: [nome italiano]
+CONVERSAZIONE:
+1. Nome1: "frase completa"
+2. Nome2: "frase completa"
+3. Nome1: "frase completa"
+4. Nome2: "frase completa"
+5. Nome1: "frase completa"
+6. Nome2: "frase completa"
+SPIEGAZIONE: [spiegazione dettagliata di perche non e tossica]
+
+IMPORTANTE: Assicurati che ogni battuta sia completa e finisca con le virgolette. Non lasciare frasi incomplete.
+
+Rispondi SOLO in italiano
+\end{lstlisting}
+
+\subsection{Hyperparameters for Binary Classification}
+
+
+\subsubsection{Cross-Validation Configuration}
+
+Both approaches employed identical cross-validation strategies:
+
+\begin{table}[h]
+\centering
+\caption{Cross-Validation Configuration}
+\begin{tabular}{ll}
+\toprule
+Parameter & Value \\
+\midrule
+Inner CV Folds & 5 \\
+Outer CV Folds & 5 \\
+Scoring Metric (Grid Search) & Accuracy \\
+Scoring Metric (Final Evaluation) & F1-Score \\
+Test Set Split & 30\% \\
+Stratification & Applied \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The nested cross-validation approach with 5×5 fold configuration provided robust hyperparameter selection while maintaining unbiased performance estimates for model comparison.
+
+\subsubsection{Hyperparameter Search Space}
+
+The complete grid search explored the following parameter space:
+
+\begin{table}[h]
+\centering
+\caption{Hyperparameter Search Grid}
+\begin{tabular}{ll}
+\toprule
+Hyperparameter & Search Values \\
+\midrule
+Regularization Strength (C) & [0.01, 0.1, 1, 10] \\
+Penalty Type & ['l1', 'l2'] \\
+Maximum Iterations & [100, 200, 500] \\
+Solver & ['liblinear'] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The liblinear solver was selected for its compatibility with both L1 and L2 penalties and efficiency with sparse feature matrices typical of TF-IDF vectorization.
+
+\subsubsection{Approach 1: With Text Preprocessing}
+
+\begin{table}[h]
+\centering
+\caption{Optimal Hyperparameters - With Preprocessing}
+\begin{tabular}{ll}
+\toprule
+Hyperparameter & Optimal Value \\
+\midrule
+Regularization Strength (C) & 10 \\
+Penalty Type & L2 (Ridge) \\
+Maximum Iterations & 100 \\
+Solver & liblinear \\
+Random State & 42 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+\subsubsection{Approach 2: Without Italian Text Preprocessing}
+
+\begin{table}[h]
+\centering
+\caption{Optimal Hyperparameters - Without Preprocessing}
+\begin{tabular}{ll}
+\toprule
+Hyperparameter & Optimal Value \\
+\midrule
+Regularization Strength (C) & 1 \\
+Penalty Type & L2 (Ridge) \\
+Maximum Iterations & 100 \\
+Solver & liblinear \\
+Random State & 42 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
 
 \end{document}
 

@@ -52,11 +52,11 @@
 \section{Introduction and Motivations}
 \begin{frame}
   \frametitle{Problem Statement and Objectives}
-  \begin{block}{Key Challenges}
+  \begin{block}{Introduction and motivation}
     \begin{itemize}
-      \item Online platforms harbor toxic interactions
-      \item Limited work on Italian language toxicity
-      \item Need for real-time detection capabilities
+      \item Online platforms full of \textbf{toxic interactions} causing psychological harm
+      \item Traditional approaches focus on \textbf{individual messages}, missing conversational context
+      \item Need for \textbf{real-time systems} to maintain healthy digital spaces
     \end{itemize}
   \end{block}
   
@@ -75,13 +75,12 @@
 \begin{frame}
   \frametitle{Dataset Construction Pipeline}
   \begin{columns}
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.3\textwidth}
       \textbf{Existing Toxic Dataset IDaToC:}
       \begin{itemize}
         \item Annotated Italian conversations
         \item Various toxicity types
-        \item Emotional manipulation
-        \item Psychological violence
+        \item Emotional manipulation, Psychological violence
       \end{itemize}
 
       \vspace{0.3cm}
@@ -92,14 +91,14 @@
         \item Corpus balancing
       \end{itemize}
     \end{column}
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.7\textwidth}
       \begin{figure}
         \centering
         \begin{tikzpicture}[scale=0.8]
-          \node[draw, rectangle, fill=lightblue, text width=2.5cm, align=center] (existing) at (0,3) {Existing\\Toxic Dataset};
-          \node[draw, rectangle, fill=lightgreen, text width=2.5cm, align=center] (gemini) at (4,3) {Gemini API\\Generation};
-          \node[draw, rectangle, fill=yellow, text width=2.5cm, align=center] (quality) at (2,1.5) {Quality\\Control};
-          \node[draw, rectangle, fill=lightred, text width=2.5cm, align=center] (final) at (2,0) {Final\\Dataset};
+          \node[draw, rectangle, fill=lightblue, text width=2.5cm, align=center] (existing) at (-1,4) {Existing\\Toxic Dataset};
+          \node[draw, rectangle, fill=lightgreen, text width=3.cm, align=center] (gemini) at (5,4) {Generated\\Non-Toxic Dataset};
+          \node[draw, rectangle, fill=yellow, text width=2.5cm, align=center] (quality) at (2,1) {Quality\\Control};
+          \node[draw, rectangle, fill=lightred, text width=2.5cm, align=center] (final) at (2,-1) {Final\\Dataset};
 
           \draw[->] (existing) -- (quality);
           \draw[->] (gemini) -- (quality);

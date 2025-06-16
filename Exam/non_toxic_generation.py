@@ -52,7 +52,7 @@ Ogni battuta deve essere COMPLETA e ben formattata. Non lasciare frasi a metà.
 La conversazione non deve essere tossica e non deve contenere comportamenti manipolativi, controllo, umiliazione, ricatto emotivo, violenza psicologica.
 
 Fornisci:
-1. Il tipo di coppia (uno dei tipi sopra elencati), SOOLO UNO
+1. Il tipo di coppia (uno dei tipi sopra elencati), SOLO UNO
 2. Due nomi italiani per i partecipanti
 3. Una conversazione non tossica con 8 battute numerate complete
 4. Una spiegazione dettagliata di perché la conversazione non è tossica
