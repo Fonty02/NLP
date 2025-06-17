@@ -112,26 +112,13 @@
 
 \begin{frame}
   \frametitle{Dataset Generation Process}
-  \begin{columns}
-    \begin{column}{0.5\textwidth}
       \begin{block}{Generation Workflow}
         \begin{enumerate}
-          \item \textbf{Prompt Engineering}: Structured prompts for non-toxic conversations
-          \item \textbf{LLM Generation}: Google Gemini API generates Italian dialogues
+          \item \textbf{LLM Generation}: Structured prompts for non-toxic dataset
           \item \textbf{Response Parsing}: Extract conversation components (names, dialogue, type)
         \end{enumerate}
       \end{block}
       
-      \begin{block}{Safety Measures}
-        \begin{itemize}
-          \item Safety filters to block harmful content
-          \item Retry mechanism for failed generations
-          \item Manual validation of conversation quality
-        \end{itemize}
-      \end{block}
-    \end{column}
-    
-    \begin{column}{0.5\textwidth}      
       \begin{block}{Output Format}
         Each generated conversation includes:
         \begin{itemize}
@@ -142,8 +129,6 @@
           \item Toxicity label (0 = non-toxic)
         \end{itemize}
       \end{block}
-    \end{column}
-  \end{columns}
 \end{frame}
 
 % --- Methodology ---
@@ -395,22 +380,92 @@
       \item GPT-based architectures
     \end{itemize}
   \end{block}
-
-  \vspace{0.5cm}
-  \begin{exampleblock}{Availability}
-    Code and dataset available on GitHub: \\
-    \url{https://github.com/Fonty02/NLP/tree/main/Exam}
-  \end{exampleblock}
 \end{frame}
+
 
 % --- Acknowledgments & Code ---
 \section{Acknowledgments}
 \begin{frame}
+  \begin{exampleblock}{Availability}
+    Code and dataset available on GitHub: \\
+    \url{https://github.com/Fonty02/NLP/tree/main/Exam}
+  \end{exampleblock}
+
   \frametitle{Thank You for Your Attention}
   \begin{center}
     \vspace{1cm}
     \Large \textbf{Thank You! \emoji{rocket}}
   \end{center}
+\end{frame}
+
+
+\section{Appendix}
+\begin{frame}
+  \frametitle{Appendix: Hyperparameters for Binary Classification}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{block}{Cross-Validation Configuration}
+        \small
+        \begin{itemize}
+          \item Inner CV Folds: 5
+          \item Outer CV Folds: 5
+          \item Scoring Metric: Accuracy
+          \item Test Set Split: 30\%
+          \item Stratification: Applied
+        \end{itemize}
+      \end{block}
+      
+      \begin{block}{Search Space}
+        \scriptsize
+        \begin{itemize}
+          \item Regularization (C): [0.01, 0.1, 1, 10]
+          \item Penalty: ['l1', 'l2']
+          \item Max Iterations: [100, 200, 500]
+          \item Solver: ['liblinear']
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \begin{table}
+        \scriptsize
+        \centering
+        \caption{Optimal Hyperparameters}
+        \begin{tabular}{lcc}
+          \toprule
+          \textbf{Parameter} & \textbf{With Preproc.} & \textbf{Without Preproc.} \\
+          \midrule
+          C & 10 & 1 \\
+          Penalty & L2 & L2 \\
+          Max Iter & 100 & 100 \\
+          Solver & liblinear & liblinear \\
+          \bottomrule
+        \end{tabular}
+      \end{table}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Appendix: Loss Curves for Personality Classification}
+\begin{columns}
+  \begin{column}{0.6\textwidth}
+    \begin{figure}
+      \centering
+      \includegraphics[width=\textwidth]{figures/training_validation_loss_plot.png}
+      \caption{Training and Validation Loss Over Epochs}
+    \end{figure}
+  \end{column}
+  \begin{column}{0.4\textwidth}
+    \begin{block}{Training Details}
+      \small
+      \begin{itemize}
+        \item Model converged after 15 epochs
+        \item Final validation loss: 0.2504
+        \item Early stopping patience: 10
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
